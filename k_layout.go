@@ -56,16 +56,16 @@ func calculateBounds(node Node) {
 	var sumWeight float32
 
 	for _, childNode := range nodeBase.children {
-		сhildNodeBase := childNode.base()
+		childNodeBase := childNode.base()
 
-		if !сhildNodeBase.IsVisible() {
+		if !childNodeBase.IsVisible() {
 			continue
 		}
 
-		if nodeBase.IsVertical() && сhildNodeBase.fixY == 0 {
-			sumWeight += effectiveWeight(сhildNodeBase.weight)
-		} else if !nodeBase.IsVertical() && сhildNodeBase.fixX == 0 {
-			sumWeight += effectiveWeight(сhildNodeBase.weight)
+		if nodeBase.IsVertical() && childNodeBase.fixY == 0 {
+			sumWeight += effectiveWeight(childNodeBase.weight)
+		} else if !nodeBase.IsVertical() && childNodeBase.fixX == 0 {
+			sumWeight += effectiveWeight(childNodeBase.weight)
 		}
 	}
 
@@ -85,34 +85,34 @@ func calculateBounds(node Node) {
 	}
 
 	for _, childNode := range nodeBase.children {
-		сhildNodeBase := childNode.base()
+		childNodeBase := childNode.base()
 		var x1, x2, y1, y2 float32
 
-		if !сhildNodeBase.IsVisible() {
+		if !childNodeBase.IsVisible() {
 			continue
 		}
 
 		if nodeBase.IsVertical() {
-			childSizeX := calculateSize(сhildNodeBase.fixX, 1, 1, nodeSizeX)
-			x1 = nodeBase.bounds.minX + (nodeSizeX - childSizeX) * float32(сhildNodeBase.selfAlign)
+			childSizeX := calculateSize(childNodeBase.fixX, 1, 1, nodeSizeX)
+			x1 = nodeBase.bounds.minX + (nodeSizeX - childSizeX) * float32(childNodeBase.selfAlign)
 			x2 = x1 + childSizeX
 
-			childSizeY := calculateSize(сhildNodeBase.fixY, effectiveWeight(сhildNodeBase.weight), sumWeight, remainingY)
+			childSizeY := calculateSize(childNodeBase.fixY, effectiveWeight(childNodeBase.weight), sumWeight, remainingY)
 			y1 = nodeBase.bounds.minY + shift
 			y2 = y1 + childSizeY
 			shift += childSizeY
 		} else {
-			childSizeX := calculateSize(сhildNodeBase.fixX, effectiveWeight(сhildNodeBase.weight), sumWeight, remainingX)
+			childSizeX := calculateSize(childNodeBase.fixX, effectiveWeight(childNodeBase.weight), sumWeight, remainingX)
 			x1 = nodeBase.bounds.minX + shift
 			x2 = x1 + childSizeX
 			shift += childSizeX
 
-			childSizeY := calculateSize(сhildNodeBase.fixY, 1, 1, nodeSizeY)
-			y1 = nodeBase.bounds.minY + (nodeSizeY - childSizeY) * float32(сhildNodeBase.selfAlign)
+			childSizeY := calculateSize(childNodeBase.fixY, 1, 1, nodeSizeY)
+			y1 = nodeBase.bounds.minY + (nodeSizeY - childSizeY) * float32(childNodeBase.selfAlign)
 			y2 = y1 + childSizeY
 		}
 
-		сhildNodeBase.bounds = rect{x1, y1, x2, y2}
+		childNodeBase.bounds = rect{x1, y1, x2, y2}
 
 		shift += nodeBase.spacing
 		calculateBounds(childNode)
