@@ -22,31 +22,31 @@
   <rect class="grid" x="0" y="0" width="680" height="240"/>
 
   <rect class="frame" x="50" y="70" width="580" height="140"/>
-  <rect class="flex" x="70" y="90" width="160" height="100"/>
-  <rect class="flex" x="260" y="90" width="160" height="100"/>
-  <rect class="flex" x="450" y="90" width="160" height="100"/>
+  <rect class="flex" x="70" y="70" width="160" height="140"/>
+  <rect class="flex" x="260" y="70" width="160" height="140"/>
+  <rect class="flex" x="450" y="70" width="160" height="140"/>
 
-  <!-- border, left -->
+  <!-- border, left, along the main (X) axis only -->
   <line class="ext" x1="50" y1="48" x2="50" y2="70"/>
-  <line class="ext" x1="70" y1="48" x2="70" y2="90"/>
+  <line class="ext" x1="70" y1="48" x2="70" y2="70"/>
   <line class="dim" x1="50" y1="48" x2="70" y2="48" marker-start="url(#tick)" marker-end="url(#tick)"/>
   <text class="dim" x="42" y="44">border: 20px</text>
 
   <!-- border, right -->
   <line class="ext" x1="630" y1="48" x2="630" y2="70"/>
-  <line class="ext" x1="610" y1="48" x2="610" y2="90"/>
+  <line class="ext" x1="610" y1="48" x2="610" y2="70"/>
   <line class="dim" x1="610" y1="48" x2="630" y2="48" marker-start="url(#tick)" marker-end="url(#tick)"/>
   <text class="dim" x="638" y="44" text-anchor="end">border: 20px</text>
 
   <!-- spacing, gap 1 -->
-  <line class="ext" x1="230" y1="76" x2="230" y2="90"/>
-  <line class="ext" x1="260" y1="76" x2="260" y2="90"/>
-  <line class="dim" x1="230" y1="76" x2="260" y2="76" marker-start="url(#tick)" marker-end="url(#tick)"/>
-  <text class="dim" x="245" y="70" text-anchor="middle">spacing: 30px</text>
+  <line class="ext" x1="230" y1="58" x2="230" y2="70"/>
+  <line class="ext" x1="260" y1="58" x2="260" y2="70"/>
+  <line class="dim" x1="230" y1="58" x2="260" y2="58" marker-start="url(#tick)" marker-end="url(#tick)"/>
+  <text class="dim" x="245" y="52" text-anchor="middle">spacing: 30px</text>
 
   <!-- spacing, gap 2 -->
-  <line class="ext" x1="420" y1="76" x2="420" y2="90"/>
-  <line class="ext" x1="450" y1="76" x2="450" y2="90"/>
-  <line class="dim" x1="420" y1="76" x2="450" y2="76" marker-start="url(#tick)" marker-end="url(#tick)"/>
-  <text class="dim" x="435" y="70" text-anchor="middle">spacing: 30px</text>
+  <line class="ext" x1="420" y1="58" x2="420" y2="70"/>
+  <line class="ext" x1="450" y1="58" x2="450" y2="70"/>
+  <line class="dim" x1="420" y1="58" x2="450" y2="58" marker-start="url(#tick)" marker-end="url(#tick)"/>
+  <text class="dim" x="435" y="52" text-anchor="middle">spacing: 30px</text>
 </svg>

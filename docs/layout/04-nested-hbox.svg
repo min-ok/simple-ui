@@ -30,35 +30,35 @@
   <text class="tag" x="40" y="82">HBox</text>
   <rect class="frame" x="40" y="90" width="600" height="300"/>
 
-  <!-- border, measured from the right edge -->
+  <!-- border, along the main (X) axis only -->
   <line class="ext" x1="640" y1="68" x2="640" y2="90"/>
-  <line class="ext" x1="620" y1="68" x2="620" y2="110"/>
+  <line class="ext" x1="620" y1="68" x2="620" y2="90"/>
   <line class="dim" x1="620" y1="68" x2="640" y2="68" marker-start="url(#tick)" marker-end="url(#tick)"/>
   <text class="dim" x="648" y="64" text-anchor="end">border: 20px</text>
 
-  <!-- spacing between top-level children -->
-  <line class="ext" x1="200" y1="96" x2="200" y2="110"/>
-  <line class="ext" x1="220" y1="96" x2="220" y2="110"/>
-  <line class="dim" x1="200" y1="96" x2="220" y2="96" marker-start="url(#tick)" marker-end="url(#tick)"/>
-  <text class="dim" x="210" y="90" text-anchor="middle">spacing: 20px</text>
+  <!-- spacing between top-level children, along the main (X) axis -->
+  <line class="ext" x1="200" y1="78" x2="200" y2="90"/>
+  <line class="ext" x1="220" y1="78" x2="220" y2="90"/>
+  <line class="dim" x1="200" y1="78" x2="220" y2="78" marker-start="url(#tick)" marker-end="url(#tick)"/>
+  <text class="dim" x="210" y="72" text-anchor="middle">spacing: 20px</text>
 
-  <!-- left: fixed panel -->
-  <rect class="fixed" x="60" y="110" width="140" height="260"/>
+  <!-- left: fixed panel, full height (border does not inset the cross axis) -->
+  <rect class="fixed" x="60" y="90" width="140" height="300"/>
   <text class="label" x="130" y="244" text-anchor="middle">fixed: 140px</text>
 
-  <!-- middle: nested VBox -->
-  <rect class="container" x="220" y="110" width="190" height="260"/>
-  <text class="tag-small" x="228" y="126">VBox</text>
-  <rect class="fixed" x="220" y="110" width="190" height="80"/>
-  <text class="label" x="315" y="154" text-anchor="middle">fixed: 80px</text>
-  <rect class="flex" x="220" y="205" width="190" height="165"/>
+  <!-- middle: nested VBox, full height -->
+  <rect class="container" x="220" y="90" width="190" height="300"/>
+  <text class="tag-small" x="228" y="106">VBox</text>
+  <rect class="fixed" x="220" y="90" width="190" height="80"/>
+  <text class="label" x="315" y="134" text-anchor="middle">fixed: 80px</text>
+  <rect class="flex" x="220" y="185" width="190" height="205"/>
   <text class="label" x="315" y="291" text-anchor="middle">weight: 1</text>
 
   <!-- nested VBox internal spacing -->
-  <line class="dim" x1="225" y1="190" x2="225" y2="205" marker-start="url(#tick)" marker-end="url(#tick)"/>
-  <text class="dim-small" x="235" y="201">spacing: 15px</text>
+  <line class="dim" x1="225" y1="170" x2="225" y2="185" marker-start="url(#tick)" marker-end="url(#tick)"/>
+  <text class="dim-small" x="235" y="181">spacing: 15px</text>
 
-  <!-- right: flex panel -->
-  <rect class="flex" x="430" y="110" width="190" height="260"/>
+  <!-- right: flex panel, full height -->
+  <rect class="flex" x="430" y="90" width="190" height="300"/>
   <text class="label" x="525" y="244" text-anchor="middle">weight: 1</text>
 </svg>
