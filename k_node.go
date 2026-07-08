@@ -73,7 +73,7 @@ func Weight(v float32) CommonOpt {
 
 func (bn *baseNode) SetWeight(v float32) {
 	bn.weight = v
-	bn.rootNode.changed = true
+	if bn.rootNode != nil { bn.rootNode.changed = true }
 }
 
 func (bn *baseNode) GetWeight() float32 {
@@ -91,7 +91,7 @@ func Border(v float32) CommonOpt {
 
 func (bn *baseNode) SetBorder(v float32) {
 	bn.border = v
-	bn.rootNode.changed = true
+	if bn.rootNode != nil { bn.rootNode.changed = true }
 }
 
 func (bn *baseNode) GetBorder() float32 {
@@ -116,13 +116,13 @@ func Horizontal() CommonOpt {
 
 func (bn *baseNode) SetVertical() {
 	bn.flags |= flagVertical
-	bn.rootNode.changed = true
+	if bn.rootNode != nil { bn.rootNode.changed = true }
 }
 
 
 func (bn *baseNode) SetHorizontal() {
 	bn.flags &= ^flagVertical
-	bn.rootNode.changed = true
+	if bn.rootNode != nil { bn.rootNode.changed = true }
 }
 
 
@@ -141,7 +141,7 @@ func Spacing(v float32) CommonOpt {
 
 func (bn *baseNode) SetSpacing(v float32) {
 	bn.spacing = v
-	bn.rootNode.changed = true
+	if bn.rootNode != nil { bn.rootNode.changed = true }
 }
 
 func (bn *baseNode) GetSpacing() float32 {
@@ -161,7 +161,7 @@ func SelfAlign(v float32) CommonOpt  {
 
 func (bn *baseNode) SetSelfAlign(v float32) {
 	bn.selfAlign = v
-	bn.rootNode.changed = true
+	if bn.rootNode != nil { bn.rootNode.changed = true }
 }
 
 func (bn *baseNode) GetSelfAlign() float32 {
@@ -180,7 +180,7 @@ func ContentAlign(v float32) CommonOpt  {
 
 func (bn *baseNode) SetContentAlign(v float32) {
 	bn.contentAlign = v
-	bn.rootNode.changed = true
+	if bn.rootNode != nil { bn.rootNode.changed = true }
 }
 
 func (bn *baseNode) GetContentAlign() float32 {
@@ -197,7 +197,7 @@ func FixX(x float32) CommonOpt {
 
 func (bn *baseNode) SetFixX(v float32) {
 	bn.fixX = v
-	bn.rootNode.changed = true
+	if bn.rootNode != nil { bn.rootNode.changed = true }
 }
 
 func (bn *baseNode) GetFixX() float32 {
@@ -213,7 +213,7 @@ func FixY(y float32) CommonOpt {
 
 func (bn *baseNode) SetFixY(v float32) {
 	bn.fixY = v
-	bn.rootNode.changed = true
+	if bn.rootNode != nil { bn.rootNode.changed = true }
 }
 
 func (bn *baseNode) GetFixY() float32 {
@@ -232,7 +232,7 @@ func FixSize(x, y float32) CommonOpt {
 func (bn *baseNode) SetFixSize(x, y float32) {
 	bn.fixX = x
 	bn.fixY = y
-	bn.rootNode.changed = true
+	if bn.rootNode != nil { bn.rootNode.changed = true }
 }
 
 func (bn *baseNode) GetFixSize() (float32, float32) {
@@ -257,13 +257,13 @@ func Invisible() CommonOpt {
 
 func (bn *baseNode) Show() {
 	bn.flags |= flagVisible
-	bn.rootNode.changed = true
+	if bn.rootNode != nil { bn.rootNode.changed = true }
 }
 
 
 func (bn *baseNode) Hide() {
 	bn.flags &= ^flagVisible
-	bn.rootNode.changed = true
+	if bn.rootNode != nil { bn.rootNode.changed = true }
 }
 
 
@@ -305,13 +305,13 @@ func Disabled() CommonOpt {
 
 func (bn *baseNode) Enable() {
 	bn.enableBranch()
-	bn.rootNode.changed = true
+	if bn.rootNode != nil { bn.rootNode.changed = true }
 }
 
 
 func (bn *baseNode) Disable() {
 	bn.disableBranch()
-	bn.rootNode.changed = true
+	if bn.rootNode != nil { bn.rootNode.changed = true }
 }
 
 

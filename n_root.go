@@ -48,12 +48,14 @@ func NewAnimation(id string, setter func(float32),  from, to, duration float32, 
 
 
 func Animate(n Node, a Animation) {
-	n.base().rootNode.animations[tweenKey{n, a.ID}] = a
+	rn := n.base().rootNode
+	if rn != nil {rn.animations[tweenKey{n, a.ID}] = a}
 }
 
 func AnimateTo(n Node, a Animation, getter func() float32) {
 	a.From = getter()
-	n.base().rootNode.animations[tweenKey{n, a.ID}] = a
+	rn := n.base().rootNode
+	if rn != nil {rn.animations[tweenKey{n, a.ID}] = a}
 }
 
 func AnimationSequence(n Node, animations ...Animation) {

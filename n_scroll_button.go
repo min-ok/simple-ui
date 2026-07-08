@@ -120,7 +120,7 @@ func (sbn *ScrollButtonNode) mouseOn(mX, mY float32) {
 		}
 
 		sbn.state = draging
-		sbn.rootNode.dragging = sbn
+		if sbn.rootNode != nil { sbn.rootNode.dragging = sbn }
 		sbn.knobMouseWasOn = true
 
 		if sbn.IsVertical() {
@@ -134,7 +134,7 @@ func (sbn *ScrollButtonNode) mouseOn(mX, mY float32) {
 		if sbn.eventsSource.onDragStartFunc != nil { sbn.eventsSource.onDragStartFunc(sbn) }
 	case inpututil.IsMouseButtonJustReleased(ebiten.MouseButtonLeft):
 		sbn.state = normal
-		sbn.rootNode.dragging = nil
+		if sbn.rootNode != nil { sbn.rootNode.dragging = nil }
 
 		if sbn.prevState != draging { return }
 		if sbn.eventsSource == nil { return }
