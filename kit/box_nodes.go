@@ -2,7 +2,7 @@ package kit
 
 
 import (
-	"simple-ui"
+	"github.com/min-ok/simple-ui"
 )
 
 

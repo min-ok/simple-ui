@@ -1,4 +1,4 @@
-module simple-ui
+module github.com/min-ok/simple-ui
 
 go 1.26.1
 

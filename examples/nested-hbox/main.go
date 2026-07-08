@@ -3,8 +3,8 @@ package main
 import (
 	"log"
 
-	ui "simple-ui"
-	"simple-ui/kit"
+	ui "github.com/min-ok/simple-ui"
+	"github.com/min-ok/simple-ui/kit"
 
 	"github.com/hajimehoshi/ebiten/v2"
 )
