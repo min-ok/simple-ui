@@ -1,0 +1,66 @@
+<svg viewBox="0 0 680 380" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    text { font-family: ui-monospace, "SF Mono", "Cascadia Code", "JetBrains Mono", Consolas, monospace; }
+    .label { font-size: 13px; fill: #1C2321; }
+    .tag { font-size: 12px; fill: #8A968F; }
+    .tag-small { font-size: 10px; fill: #8A968F; }
+    .dim { font-size: 12px; fill: #57635C; }
+    .dim-small { font-size: 10px; fill: #57635C; }
+    line.dim { stroke: #8A968F; stroke-width: 1; }
+    line.ext { stroke: rgba(28,35,29,0.34); stroke-width: 1; }
+    rect.bg { fill: #F8F9F7; }
+    rect.grid { fill: url(#graphpaper); }
+    rect.frame { fill: none; stroke: rgba(28,35,29,0.34); stroke-width: 1.25; }
+    rect.container { fill: none; stroke: rgba(28,35,29,0.5); stroke-width: 1.25; stroke-dasharray: 4 3; }
+    rect.flex { fill: rgba(201,106,34,0.13); stroke: rgba(201,106,34,0.55); stroke-width: 1.25; }
+    rect.fixed { fill: rgba(34,125,116,0.13); stroke: rgba(34,125,116,0.55); stroke-width: 1.25; }
+  </style>
+  <defs>
+    <pattern id="graphpaper" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(28,35,29,0.14)" stroke-width="1"/>
+    </pattern>
+    <marker id="tick" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M5,0 L5,10" stroke="#8A968F" stroke-width="1.4"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="680" height="380"/>
+  <rect class="grid" x="0" y="0" width="680" height="380"/>
+
+  <text class="tag" x="40" y="38">VBox</text>
+  <rect class="frame" x="40" y="50" width="600" height="300"/>
+
+  <!-- border, measured from the right edge -->
+  <line class="ext" x1="640" y1="28" x2="640" y2="50"/>
+  <line class="ext" x1="620" y1="28" x2="620" y2="70"/>
+  <line class="dim" x1="620" y1="28" x2="640" y2="28" marker-start="url(#tick)" marker-end="url(#tick)"/>
+  <text class="dim" x="648" y="24" text-anchor="end">border: 20px</text>
+
+  <!-- header: fixed row -->
+  <rect class="fixed" x="60" y="70" width="560" height="50"/>
+  <text class="label" x="340" y="99" text-anchor="middle">fixed: 50px</text>
+
+  <!-- spacing between header and middle -->
+  <line class="dim" x1="600" y1="120" x2="600" y2="140" marker-start="url(#tick)" marker-end="url(#tick)"/>
+  <text class="dim" x="594" y="133" text-anchor="end">spacing: 20px</text>
+
+  <!-- middle: nested HBox row -->
+  <rect class="container" x="60" y="140" width="560" height="120"/>
+  <text class="tag-small" x="68" y="156">HBox</text>
+  <rect class="fixed" x="60" y="140" width="140" height="120"/>
+  <text class="label" x="130" y="204" text-anchor="middle">fixed: 140px</text>
+  <rect class="flex" x="220" y="140" width="127" height="120"/>
+  <text class="label" x="283" y="204" text-anchor="middle">weight: 1</text>
+  <rect class="flex" x="367" y="140" width="253" height="120"/>
+  <text class="label" x="493" y="204" text-anchor="middle">weight: 2</text>
+
+  <!-- nested HBox internal spacing -->
+  <line class="ext" x1="200" y1="260" x2="200" y2="266"/>
+  <line class="ext" x1="220" y1="260" x2="220" y2="266"/>
+  <line class="dim" x1="200" y1="266" x2="220" y2="266" marker-start="url(#tick)" marker-end="url(#tick)"/>
+  <text class="dim-small" x="210" y="277" text-anchor="middle">spacing: 20px</text>
+
+  <!-- footer: fixed row -->
+  <rect class="fixed" x="60" y="280" width="560" height="50"/>
+  <text class="label" x="340" y="309" text-anchor="middle">fixed: 50px</text>
+</svg>

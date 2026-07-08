@@ -1,0 +1,52 @@
+<svg viewBox="0 0 680 240" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    text { font-family: ui-monospace, "SF Mono", "Cascadia Code", "JetBrains Mono", Consolas, monospace; fill: #1C2321; }
+    .dim { font-size: 12px; fill: #57635C; }
+    line.dim { stroke: #8A968F; stroke-width: 1; }
+    line.ext { stroke: rgba(28,35,29,0.34); stroke-width: 1; }
+    rect.bg { fill: #F8F9F7; }
+    rect.grid { fill: url(#graphpaper); }
+    rect.frame { fill: none; stroke: rgba(28,35,29,0.34); stroke-width: 1.25; }
+    rect.flex { fill: rgba(201,106,34,0.13); stroke: rgba(201,106,34,0.55); stroke-width: 1.25; }
+  </style>
+  <defs>
+    <pattern id="graphpaper" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(28,35,29,0.14)" stroke-width="1"/>
+    </pattern>
+    <marker id="tick" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M5,0 L5,10" stroke="#8A968F" stroke-width="1.4"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="680" height="240"/>
+  <rect class="grid" x="0" y="0" width="680" height="240"/>
+
+  <rect class="frame" x="50" y="70" width="580" height="140"/>
+  <rect class="flex" x="70" y="90" width="160" height="100"/>
+  <rect class="flex" x="260" y="90" width="160" height="100"/>
+  <rect class="flex" x="450" y="90" width="160" height="100"/>
+
+  <!-- border, left -->
+  <line class="ext" x1="50" y1="48" x2="50" y2="70"/>
+  <line class="ext" x1="70" y1="48" x2="70" y2="90"/>
+  <line class="dim" x1="50" y1="48" x2="70" y2="48" marker-start="url(#tick)" marker-end="url(#tick)"/>
+  <text class="dim" x="42" y="44">border: 20px</text>
+
+  <!-- border, right -->
+  <line class="ext" x1="630" y1="48" x2="630" y2="70"/>
+  <line class="ext" x1="610" y1="48" x2="610" y2="90"/>
+  <line class="dim" x1="610" y1="48" x2="630" y2="48" marker-start="url(#tick)" marker-end="url(#tick)"/>
+  <text class="dim" x="638" y="44" text-anchor="end">border: 20px</text>
+
+  <!-- spacing, gap 1 -->
+  <line class="ext" x1="230" y1="76" x2="230" y2="90"/>
+  <line class="ext" x1="260" y1="76" x2="260" y2="90"/>
+  <line class="dim" x1="230" y1="76" x2="260" y2="76" marker-start="url(#tick)" marker-end="url(#tick)"/>
+  <text class="dim" x="245" y="70" text-anchor="middle">spacing: 30px</text>
+
+  <!-- spacing, gap 2 -->
+  <line class="ext" x1="420" y1="76" x2="420" y2="90"/>
+  <line class="ext" x1="450" y1="76" x2="450" y2="90"/>
+  <line class="dim" x1="420" y1="76" x2="450" y2="76" marker-start="url(#tick)" marker-end="url(#tick)"/>
+  <text class="dim" x="435" y="70" text-anchor="middle">spacing: 30px</text>
+</svg>
