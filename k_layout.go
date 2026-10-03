@@ -34,6 +34,7 @@ func arrange(node Node) {
 	}
 
 	if visibleChildren == 0 {
+		if nodeBase.IsAutoSize() { nodeBase.fixX, nodeBase.fixY = node.getInitSize() }
 		return
 	}
 
@@ -46,6 +47,8 @@ func arrange(node Node) {
 		nodeBase.occupiedX = max(nodeBase.occupiedX, occupiedSumX + spacing)
 		nodeBase.occupiedY = max(nodeBase.occupiedY, maxY)
 	}
+
+	if nodeBase.IsAutoSize() { nodeBase.fixX, nodeBase.fixY = nodeBase.occupiedX, nodeBase.occupiedY }
 }
 
 func calculateBounds(node Node) {

@@ -45,6 +45,7 @@ const (
 	flagVisible uint8 = 1 << 0
 	flagEnabled uint8 = 1 << 1
 	flagVertical uint8 = 1 << 2
+	flagAutoSize uint8 = 1 << 3
 )
 
 
@@ -220,6 +221,10 @@ func (bn *baseNode) GetFixY() float32 {
 	return bn.fixY
 }
 
+
+
+
+
 // FixSize fixes the node on both axes.
 func FixSize(x, y float32) CommonOpt {
 	return func(n Node) {
@@ -238,6 +243,43 @@ func (bn *baseNode) SetFixSize(x, y float32) {
 func (bn *baseNode) GetFixSize() (float32, float32) {
 	return bn.fixX, bn.fixY
 }
+
+
+
+// DefaultSize Должен быть вызван после всех настроек, которые могут повлиять
+
+func DefaultSize() CommonOpt {
+	return func(n Node) {
+		base := n.base()
+		base.fixX, base.fixY = n.getInitSize()
+	}
+}
+
+
+func AutoSize() CommonOpt {
+	return func(n Node) { n.base().flags |= flagAutoSize }
+}
+
+func NoAutoSize() CommonOpt {
+	return func(n Node) { n.base().flags &= ^flagAutoSize }
+}
+
+
+func (bn *baseNode) SetAutoSize() {
+	bn.flags |= flagAutoSize
+	if bn.rootNode != nil { bn.rootNode.changed = true }
+}
+
+func (bn *baseNode) SetNoAutoSize() {
+	bn.flags &= ^flagAutoSize
+	if bn.rootNode != nil { bn.rootNode.changed = true }
+}
+
+
+func (bn *baseNode) IsAutoSize() bool {
+	return bn.flags & flagAutoSize != 0
+}
+
 
 
 
@@ -325,14 +367,6 @@ func (bn *baseNode) IsEnabled() bool {
 
 
 
-// DefaultSize Должен быть вызван после всех настроек, которые могут повлиять
-
-func DefaultSize() CommonOpt {
-	return func(n Node) {
-		base := n.base()
-		base.fixX, base.fixY = n.getInitSize()
-	}
-}
 
 func (bn *baseNode) GetBounds() (float32, float32, float32, float32) {
 	bounds := bn.bounds

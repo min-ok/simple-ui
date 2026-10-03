@@ -413,6 +413,7 @@ func StripeImage(img *ebiten.Image) ScrollButtonOpt {
 }
 func (sbn *ScrollButtonNode) SetStripeImage(img *ebiten.Image) {
 	sbn.stripe.image = img
+	if sbn.IsAutoSize() && sbn.rootNode != nil { sbn.rootNode.changed = true }
 }
 func (sbn *ScrollButtonNode) GetStripeImage() *ebiten.Image	 {
 	return sbn.stripe.image
