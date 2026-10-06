@@ -1,19 +1,16 @@
 package kit
 
-
 import (
-	"github.com/min-ok/simple-ui"
+	ui "github.com/min-ok/simple-ui"
 )
-
 
 const (
 	Center float32 = 0.5
-	Right = 1
-	Left = 0
-	Top = 0
-	Bottom = 1
+	Right          = 1
+	Left           = 0
+	Top            = 0
+	Bottom         = 1
 )
-
 
 // Spacer creates a Box Node.
 // Needed to arrange other boxes.
@@ -21,7 +18,6 @@ const (
 func Spacer(weight float32) *ui.BoxNode {
 	return ui.Box(ui.Weight(weight))
 }
-
 
 // VBox creates a Vertical Node.
 // The children of this box will be arranged vertically.
@@ -31,7 +27,6 @@ func VBox(weight float32, opts ...ui.BoxOption) *ui.BoxNode {
 	all = append(all, opts...)
 	return ui.Box(all...)
 }
-
 
 // HBox creates a Horizontal Node.
 // The children of this box will be arranged horizontally.

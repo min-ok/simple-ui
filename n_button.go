@@ -5,12 +5,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 )
 
-
-
-
-
 type buttonState int
-
 
 type ButtonNode struct {
 	baseNode
@@ -20,24 +15,22 @@ type ButtonNode struct {
 type buttonElement struct {
 	spriteElement
 
-	state buttonState
+	state     buttonState
 	prevState buttonState
 
-	mouseWasOn bool
+	mouseWasOn     bool
 	prevMouseWasOn bool
 
 	eventsSource *ButtonEventsSource
 }
 
-
 type ButtonEventsSource struct {
-	onJustPressedFunc func(bn *ButtonNode)
+	onJustPressedFunc  func(bn *ButtonNode)
 	onJustReleasedFunc func(bn *ButtonNode)
-	onPressedFunc func(bn *ButtonNode)
-	onEnterFunc func(bn *ButtonNode)
-	onLeaveFunc func(bn *ButtonNode)
+	onPressedFunc      func(bn *ButtonNode)
+	onEnterFunc        func(bn *ButtonNode)
+	onLeaveFunc        func(bn *ButtonNode)
 }
-
 
 var _ Node = &ButtonNode{}
 var _ interactable = &ButtonNode{}
@@ -47,12 +40,9 @@ func (bn *ButtonNode) draw(screen *ebiten.Image, showDebugInfo bool, depth int) 
 	bn.drawSpriteElement(bn.baseNode.bounds, screen)
 }
 
-
-
 func (bn *ButtonNode) base() *baseNode {
 	return &bn.baseNode
 }
-
 
 func (bn *ButtonNode) mouseOn(mX, mY float32) {
 	bn.mouseWasOn = true
@@ -66,27 +56,41 @@ func (bn *ButtonNode) mouseOn(mX, mY float32) {
 	switch {
 	case inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft):
 		bn.state = justPressed
-		if bn.eventsSource == nil { return }
-		if bn.eventsSource.onJustPressedFunc != nil { bn.eventsSource.onJustPressedFunc(bn) }
+		if bn.eventsSource == nil {
+			return
+		}
+		if bn.eventsSource.onJustPressedFunc != nil {
+			bn.eventsSource.onJustPressedFunc(bn)
+		}
 	case inpututil.IsMouseButtonJustReleased(ebiten.MouseButtonLeft):
 		bn.state = justReleased
-		if bn.eventsSource == nil { return }
-		if bn.eventsSource.onJustReleasedFunc != nil { bn.eventsSource.onJustReleasedFunc(bn) }
+		if bn.eventsSource == nil {
+			return
+		}
+		if bn.eventsSource.onJustReleasedFunc != nil {
+			bn.eventsSource.onJustReleasedFunc(bn)
+		}
 	case ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft):
 		bn.state = pressed
-		if bn.eventsSource == nil { return }
-		if bn.eventsSource.onPressedFunc != nil { bn.eventsSource.onPressedFunc(bn) }
+		if bn.eventsSource == nil {
+			return
+		}
+		if bn.eventsSource.onPressedFunc != nil {
+			bn.eventsSource.onPressedFunc(bn)
+		}
 	default:
 		bn.state = hovered
 
 		if bn.prevState != hovered {
-			if bn.eventsSource == nil { return }
-			if bn.eventsSource.onEnterFunc != nil { bn.eventsSource.onEnterFunc(bn) }
+			if bn.eventsSource == nil {
+				return
+			}
+			if bn.eventsSource.onEnterFunc != nil {
+				bn.eventsSource.onEnterFunc(bn)
+			}
 		}
 	}
 }
-
-
 
 func (bn *ButtonNode) prepareFrame() {
 	if !bn.mouseWasOn && bn.prevMouseWasOn {
@@ -104,10 +108,6 @@ func (bn *ButtonNode) prepareFrame() {
 	bn.state = normal
 }
 
-
-
-
-
 // Button creates a Button Node.
 // By default, the Button gets the size of its normal Sprite. To avoid this, use MakeDynamic.
 func Button(opts ...ButtonOption) *ButtonNode {
@@ -121,19 +121,14 @@ func Button(opts ...ButtonOption) *ButtonNode {
 	return bn
 }
 
-
-
-
-
-
 // ButtonEvents
 func NewButtonEventsSource(onJustPressedFunc, onJustReleasedFunc, onPressedFunc, onEnterFunc, onLeaveFunc func(bn *ButtonNode)) *ButtonEventsSource {
-	return &ButtonEventsSource {
-		onJustPressedFunc: onJustPressedFunc,
+	return &ButtonEventsSource{
+		onJustPressedFunc:  onJustPressedFunc,
 		onJustReleasedFunc: onJustReleasedFunc,
-		onPressedFunc: onPressedFunc,
-		onEnterFunc: onEnterFunc,
-		onLeaveFunc: onLeaveFunc,
+		onPressedFunc:      onPressedFunc,
+		onEnterFunc:        onEnterFunc,
+		onLeaveFunc:        onLeaveFunc,
 	}
 }
 
@@ -160,7 +155,9 @@ func (bn *ButtonNode) SetOnJustPressedFunc(onJustPressedFunc func(*ButtonNode)) 
 	bn.eventsSource.onJustPressedFunc = onJustPressedFunc
 }
 func (bn *ButtonNode) GetOnJustPressedFunc() func(*ButtonNode) {
-	if bn.eventsSource == nil { return nil }
+	if bn.eventsSource == nil {
+		return nil
+	}
 	return bn.eventsSource.onJustPressedFunc
 }
 
@@ -175,7 +172,9 @@ func (bn *ButtonNode) SetOnJustReleasedFunc(onJustReleasedFunc func(*ButtonNode)
 	bn.eventsSource.onJustReleasedFunc = onJustReleasedFunc
 }
 func (bn *ButtonNode) GetOnJustReleasedFunc() func(*ButtonNode) {
-	if bn.eventsSource == nil { return nil }
+	if bn.eventsSource == nil {
+		return nil
+	}
 	return bn.eventsSource.onJustReleasedFunc
 }
 
@@ -190,7 +189,9 @@ func (bn *ButtonNode) SetOnPressedFunc(onPressedFunc func(*ButtonNode)) {
 	bn.eventsSource.onPressedFunc = onPressedFunc
 }
 func (bn *ButtonNode) GetOnPressedFunc() func(*ButtonNode) {
-	if bn.eventsSource == nil { return nil }
+	if bn.eventsSource == nil {
+		return nil
+	}
 	return bn.eventsSource.onPressedFunc
 }
 
@@ -205,7 +206,9 @@ func (bn *ButtonNode) SetOnEnterFunc(onEnterFunc func(*ButtonNode)) {
 	bn.eventsSource.onEnterFunc = onEnterFunc
 }
 func (bn *ButtonNode) GetOnEnterFunc() func(*ButtonNode) {
-	if bn.eventsSource == nil { return nil }
+	if bn.eventsSource == nil {
+		return nil
+	}
 	return bn.eventsSource.onEnterFunc
 }
 
@@ -220,6 +223,8 @@ func (bn *ButtonNode) SetOnLeaveFunc(onLeaveFunc func(*ButtonNode)) {
 	bn.eventsSource.onLeaveFunc = onLeaveFunc
 }
 func (bn *ButtonNode) GetOnLeaveFunc() func(*ButtonNode) {
-	if bn.eventsSource == nil { return nil }
+	if bn.eventsSource == nil {
+		return nil
+	}
 	return bn.eventsSource.onLeaveFunc
 }

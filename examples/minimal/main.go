@@ -2,9 +2,10 @@ package main
 
 import (
 	"log"
+
+	"github.com/hajimehoshi/ebiten/v2"
 	ui "github.com/min-ok/simple-ui"
 	"github.com/min-ok/simple-ui/kit"
-	"github.com/hajimehoshi/ebiten/v2"
 )
 
 type Game struct {
@@ -21,7 +22,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
-	g.root.UpdateLayout(1.0 / 60.0, outsideWidth, outsideHeight)
+	g.root.UpdateLayout(1.0/60.0, outsideWidth, outsideHeight)
 	return outsideWidth, outsideHeight
 }
 

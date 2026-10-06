@@ -24,7 +24,6 @@ func prepareFrame(bn Node) {
 	}
 }
 
-
 func findCursorInChildren(node Node, mX, mY float32) {
 	nodeBase := node.base()
 
@@ -40,7 +39,6 @@ func findCursorInChildren(node Node, mX, mY float32) {
 		findCursorInChildren(childNode, mX, mY)
 	}
 }
-
 
 func (bn *ButtonNode) ensureEventsSource() {
 	if bn.eventsSource == nil {

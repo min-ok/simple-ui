@@ -1,10 +1,8 @@
 package ui
 
-
 import (
 	"github.com/hajimehoshi/ebiten/v2"
 )
-
 
 func arrange(node Node) {
 	nodeBase := node.base()
@@ -34,27 +32,33 @@ func arrange(node Node) {
 	}
 
 	if visibleChildren == 0 {
-		if nodeBase.IsAutoSize() { nodeBase.fixX, nodeBase.fixY = node.getInitSize() }
+		if nodeBase.IsAutoSize() {
+			nodeBase.fixX, nodeBase.fixY = node.getInitSize()
+		}
 		return
 	}
 
-	spacing := float32(visibleChildren - 1) * nodeBase.spacing + 2 * nodeBase.border
+	spacing := float32(visibleChildren-1)*nodeBase.spacing + 2*nodeBase.border
 
 	if nodeBase.IsVertical() {
 		nodeBase.occupiedX = max(nodeBase.occupiedX, maxX)
-		nodeBase.occupiedY = max(nodeBase.occupiedY, occupiedSumY + spacing)
+		nodeBase.occupiedY = max(nodeBase.occupiedY, occupiedSumY+spacing)
 	} else {
-		nodeBase.occupiedX = max(nodeBase.occupiedX, occupiedSumX + spacing)
+		nodeBase.occupiedX = max(nodeBase.occupiedX, occupiedSumX+spacing)
 		nodeBase.occupiedY = max(nodeBase.occupiedY, maxY)
 	}
 
-	if nodeBase.IsAutoSize() { nodeBase.fixX, nodeBase.fixY = nodeBase.occupiedX, nodeBase.occupiedY }
+	if nodeBase.IsAutoSize() {
+		nodeBase.fixX, nodeBase.fixY = nodeBase.occupiedX, nodeBase.occupiedY
+	}
 }
 
 func calculateBounds(node Node) {
 	nodeBase := node.base()
 
-	if len(nodeBase.children) == 0 { return }
+	if len(nodeBase.children) == 0 {
+		return
+	}
 
 	var sumWeight float32
 
@@ -97,7 +101,7 @@ func calculateBounds(node Node) {
 
 		if nodeBase.IsVertical() {
 			childSizeX := calculateSize(childNodeBase.fixX, 1, 1, nodeSizeX)
-			x1 = nodeBase.bounds.minX + (nodeSizeX - childSizeX) * float32(childNodeBase.selfAlign)
+			x1 = nodeBase.bounds.minX + (nodeSizeX-childSizeX)*float32(childNodeBase.selfAlign)
 			x2 = x1 + childSizeX
 
 			childSizeY := calculateSize(childNodeBase.fixY, effectiveWeight(childNodeBase.weight), sumWeight, remainingY)
@@ -111,7 +115,7 @@ func calculateBounds(node Node) {
 			shift += childSizeX
 
 			childSizeY := calculateSize(childNodeBase.fixY, 1, 1, nodeSizeY)
-			y1 = nodeBase.bounds.minY + (nodeSizeY - childSizeY) * float32(childNodeBase.selfAlign)
+			y1 = nodeBase.bounds.minY + (nodeSizeY-childSizeY)*float32(childNodeBase.selfAlign)
 			y2 = y1 + childSizeY
 		}
 
@@ -129,7 +133,6 @@ func effectiveWeight(w float32) float32 {
 	return w
 }
 
-
 func calculateSize(init, weight, sumWeight, remaining float32) float32 {
 	if init != 0 {
 		return init
@@ -137,9 +140,6 @@ func calculateSize(init, weight, sumWeight, remaining float32) float32 {
 
 	return (weight / sumWeight) * remaining
 }
-
-
-
 
 func drawTree(n Node, screen *ebiten.Image, showDebugInfo bool, depth int) {
 	nodeBase := n.base()
@@ -151,6 +151,6 @@ func drawTree(n Node, screen *ebiten.Image, showDebugInfo bool, depth int) {
 	n.draw(screen, showDebugInfo, depth)
 
 	for _, v := range nodeBase.children {
-		drawTree(v, screen, showDebugInfo, depth + 1)
+		drawTree(v, screen, showDebugInfo, depth+1)
 	}
 }

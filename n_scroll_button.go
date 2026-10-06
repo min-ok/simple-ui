@@ -1,38 +1,35 @@
 package ui
 
-
 import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 )
-
 
 type ScrollButtonNode struct {
 	baseNode
 	scrollButtonElement
 }
 
-
 type scrollButtonElement struct {
 	stripe spriteElement
-	knob spriteElement
+	knob   spriteElement
 
 	value float32
 
-	knobAlign float32
+	knobAlign  float32
 	trackStart float32
-	trackEnd float32
+	trackEnd   float32
 
-	dragStartPos float32
+	dragStartPos   float32
 	dragStartValue float32
 
-	state buttonState
+	state     buttonState
 	prevState buttonState
 
-	stripeMouseWasOn bool
+	stripeMouseWasOn     bool
 	prevStripeMouseWasOn bool
 
-	knobMouseWasOn bool
+	knobMouseWasOn     bool
 	prevKnobMouseWasOn bool
 
 	eventsSource *ScrollButtonEventsSource
@@ -40,24 +37,21 @@ type scrollButtonElement struct {
 
 type ScrollButtonEventsSource struct {
 	onDragStartFunc func(sbn *ScrollButtonNode)
-	onDragEndFunc func(sbn *ScrollButtonNode)
-	onDragingFunc func(sbn *ScrollButtonNode)
+	onDragEndFunc   func(sbn *ScrollButtonNode)
+	onDragingFunc   func(sbn *ScrollButtonNode)
 
 	onStripeEnterFunc func(sbn *ScrollButtonNode)
 	onStripeLeaveFunc func(sbn *ScrollButtonNode)
-	onKnobEnterFunc func(sbn *ScrollButtonNode)
-	onKnobLeaveFunc func(sbn *ScrollButtonNode)
+	onKnobEnterFunc   func(sbn *ScrollButtonNode)
+	onKnobLeaveFunc   func(sbn *ScrollButtonNode)
 }
-
 
 var _ Node = &ScrollButtonNode{}
 var _ interactable = &ScrollButtonNode{}
 
-
 func clamp(v float32) float32 {
 	return min(max(v, 0), 1)
 }
-
 
 func (sbn *ScrollButtonNode) knobRect() rect {
 	knobSizeX, knobSizeY := sbn.knob.getInitSize()
@@ -68,17 +62,16 @@ func (sbn *ScrollButtonNode) knobRect() rect {
 	var knobPosX, knobPosY float32
 	if sbn.IsVertical() {
 		trackSize := barY - sbn.trackStart - sbn.trackEnd
-		knobPosX = sbnBounds.minX + (barX - knobSizeX) * sbn.knobAlign
-		knobPosY = sbnBounds.minY + sbn.trackStart + sbn.value * (trackSize - knobSizeY)
+		knobPosX = sbnBounds.minX + (barX-knobSizeX)*sbn.knobAlign
+		knobPosY = sbnBounds.minY + sbn.trackStart + sbn.value*(trackSize-knobSizeY)
 	} else {
 		trackSize := barX - sbn.trackStart - sbn.trackEnd
-		knobPosX = sbnBounds.minX + sbn.trackStart + sbn.value * (trackSize - knobSizeX)
-		knobPosY = sbnBounds.minY + (barY - knobSizeY) * sbn.knobAlign
+		knobPosX = sbnBounds.minX + sbn.trackStart + sbn.value*(trackSize-knobSizeX)
+		knobPosY = sbnBounds.minY + (barY-knobSizeY)*sbn.knobAlign
 	}
 
 	return rect{knobPosX, knobPosY, knobPosX + knobSizeX, knobPosY + knobSizeY}
 }
-
 
 func (sbn *ScrollButtonNode) draw(screen *ebiten.Image, showDebugInfo bool, depth int) {
 	sbn.stripe.drawSpriteElement(sbn.baseNode.bounds, screen)
@@ -90,16 +83,13 @@ func (sbn *ScrollButtonNode) draw(screen *ebiten.Image, showDebugInfo bool, dept
 	sbn.knob.drawSpriteElement(sbn.knobRect(), screen)
 }
 
-
 func (sbn *ScrollButtonNode) getInitSize() (float32, float32) {
 	return sbn.stripe.getInitSize()
 }
 
-
 func (sbn *ScrollButtonNode) base() *baseNode {
 	return &sbn.baseNode
 }
-
 
 func (sbn *ScrollButtonNode) mouseOn(mX, mY float32) {
 	sbn.stripeMouseWasOn = true
@@ -120,7 +110,9 @@ func (sbn *ScrollButtonNode) mouseOn(mX, mY float32) {
 		}
 
 		sbn.state = draging
-		if sbn.rootNode != nil { sbn.rootNode.dragging = sbn }
+		if sbn.rootNode != nil {
+			sbn.rootNode.dragging = sbn
+		}
 		sbn.knobMouseWasOn = true
 
 		if sbn.IsVertical() {
@@ -130,15 +122,27 @@ func (sbn *ScrollButtonNode) mouseOn(mX, mY float32) {
 		}
 		sbn.dragStartValue = sbn.value
 
-		if sbn.eventsSource == nil { return }
-		if sbn.eventsSource.onDragStartFunc != nil { sbn.eventsSource.onDragStartFunc(sbn) }
+		if sbn.eventsSource == nil {
+			return
+		}
+		if sbn.eventsSource.onDragStartFunc != nil {
+			sbn.eventsSource.onDragStartFunc(sbn)
+		}
 	case inpututil.IsMouseButtonJustReleased(ebiten.MouseButtonLeft):
 		sbn.state = normal
-		if sbn.rootNode != nil { sbn.rootNode.dragging = nil }
+		if sbn.rootNode != nil {
+			sbn.rootNode.dragging = nil
+		}
 
-		if sbn.prevState != draging { return }
-		if sbn.eventsSource == nil { return }
-		if sbn.eventsSource.onDragEndFunc != nil { sbn.eventsSource.onDragEndFunc(sbn) }
+		if sbn.prevState != draging {
+			return
+		}
+		if sbn.eventsSource == nil {
+			return
+		}
+		if sbn.eventsSource.onDragEndFunc != nil {
+			sbn.eventsSource.onDragEndFunc(sbn)
+		}
 	case ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft):
 		if sbn.prevState != draging {
 			return
@@ -153,7 +157,7 @@ func (sbn *ScrollButtonNode) mouseOn(mX, mY float32) {
 			trackSize := barY - sbn.trackStart - sbn.trackEnd
 
 			delta := mY - sbn.dragStartPos
-			sbn.value = clamp(sbn.dragStartValue + delta / (trackSize - knobSizeY))
+			sbn.value = clamp(sbn.dragStartValue + delta/(trackSize-knobSizeY))
 		} else {
 			sbnBounds := sbn.baseNode.bounds
 			knobSizeX, _ := sbn.knob.getInitSize()
@@ -161,17 +165,25 @@ func (sbn *ScrollButtonNode) mouseOn(mX, mY float32) {
 			trackSize := barX - sbn.trackStart - sbn.trackEnd
 
 			delta := mX - sbn.dragStartPos
-			sbn.value = clamp(sbn.dragStartValue + delta / (trackSize - knobSizeX))
+			sbn.value = clamp(sbn.dragStartValue + delta/(trackSize-knobSizeX))
 		}
 
-		if sbn.eventsSource == nil { return }
-		if sbn.eventsSource.onDragingFunc != nil { sbn.eventsSource.onDragingFunc(sbn) }
+		if sbn.eventsSource == nil {
+			return
+		}
+		if sbn.eventsSource.onDragingFunc != nil {
+			sbn.eventsSource.onDragingFunc(sbn)
+		}
 	default:
 		sbn.state = hovered
 
 		if sbn.prevState != hovered {
-			if sbn.eventsSource == nil { return }
-			if sbn.eventsSource.onStripeEnterFunc != nil { sbn.eventsSource.onStripeEnterFunc(sbn) }
+			if sbn.eventsSource == nil {
+				return
+			}
+			if sbn.eventsSource.onStripeEnterFunc != nil {
+				sbn.eventsSource.onStripeEnterFunc(sbn)
+			}
 		}
 
 		r := sbn.knobRect()
@@ -179,13 +191,16 @@ func (sbn *ScrollButtonNode) mouseOn(mX, mY float32) {
 		if mX >= r.minX && mX <= r.maxX && mY >= r.minY && mY <= r.maxY {
 			sbn.knobMouseWasOn = true
 			if !sbn.prevKnobMouseWasOn {
-				if sbn.eventsSource == nil { return }
-				if sbn.eventsSource.onKnobEnterFunc != nil { sbn.eventsSource.onKnobEnterFunc(sbn) }
+				if sbn.eventsSource == nil {
+					return
+				}
+				if sbn.eventsSource.onKnobEnterFunc != nil {
+					sbn.eventsSource.onKnobEnterFunc(sbn)
+				}
 			}
 		}
 	}
 }
-
 
 func (sbn *ScrollButtonNode) prepareFrame() {
 	if !sbn.stripeMouseWasOn && sbn.prevStripeMouseWasOn {
@@ -213,7 +228,6 @@ func (sbn *ScrollButtonNode) prepareFrame() {
 	sbn.state = normal
 }
 
-
 func ScrollButton(opts ...ScrollButtonOption) *ScrollButtonNode {
 	sbn := &ScrollButtonNode{}
 	sbn.flags |= flagVisible | flagEnabled
@@ -224,7 +238,6 @@ func ScrollButton(opts ...ScrollButtonOption) *ScrollButtonNode {
 	}
 	return sbn
 }
-
 
 func Value(v float32) ScrollButtonOpt {
 	return func(sbn *ScrollButtonNode) {
@@ -276,15 +289,15 @@ func (sbn *ScrollButtonNode) SetTrackEnd(te float32) {
 
 // ScrollButtonEvents
 func NewScrollButtonEventsSource(onDragStartFunc, onDragEndFunc, onDragingFunc, onStripeEnterFunc, onStripeLeaveFunc, onKnobEnterFunc, onKnobLeaveFunc func(bn *ScrollButtonNode)) *ScrollButtonEventsSource {
-	return &ScrollButtonEventsSource {
+	return &ScrollButtonEventsSource{
 		onDragStartFunc: onDragStartFunc,
-		onDragEndFunc: onDragEndFunc,
-		onDragingFunc: onDragingFunc,
+		onDragEndFunc:   onDragEndFunc,
+		onDragingFunc:   onDragingFunc,
 
 		onStripeEnterFunc: onStripeEnterFunc,
 		onStripeLeaveFunc: onStripeLeaveFunc,
-		onKnobEnterFunc: onKnobEnterFunc,
-		onKnobLeaveFunc: onKnobLeaveFunc,
+		onKnobEnterFunc:   onKnobEnterFunc,
+		onKnobLeaveFunc:   onKnobLeaveFunc,
 	}
 }
 
@@ -311,7 +324,9 @@ func (sbn *ScrollButtonNode) SetOnDragStartFunc(onDragStartFunc func(*ScrollButt
 	sbn.eventsSource.onDragStartFunc = onDragStartFunc
 }
 func (sbn *ScrollButtonNode) GetOnDragStartFunc() func(*ScrollButtonNode) {
-	if sbn.eventsSource == nil { return nil }
+	if sbn.eventsSource == nil {
+		return nil
+	}
 	return sbn.eventsSource.onDragStartFunc
 }
 
@@ -326,7 +341,9 @@ func (sbn *ScrollButtonNode) SetOnDragEndFunc(onDragEndFunc func(*ScrollButtonNo
 	sbn.eventsSource.onDragEndFunc = onDragEndFunc
 }
 func (sbn *ScrollButtonNode) GetOnDragEndFunc() func(*ScrollButtonNode) {
-	if sbn.eventsSource == nil { return nil }
+	if sbn.eventsSource == nil {
+		return nil
+	}
 	return sbn.eventsSource.onDragEndFunc
 }
 
@@ -341,7 +358,9 @@ func (sbn *ScrollButtonNode) SetOnDragingFunc(onDragingFunc func(*ScrollButtonNo
 	sbn.eventsSource.onDragingFunc = onDragingFunc
 }
 func (sbn *ScrollButtonNode) GetOnDragingFunc() func(*ScrollButtonNode) {
-	if sbn.eventsSource == nil { return nil }
+	if sbn.eventsSource == nil {
+		return nil
+	}
 	return sbn.eventsSource.onDragingFunc
 }
 
@@ -356,7 +375,9 @@ func (sbn *ScrollButtonNode) SetOnStripeEnterFunc(onStripeEnterFunc func(*Scroll
 	sbn.eventsSource.onStripeEnterFunc = onStripeEnterFunc
 }
 func (sbn *ScrollButtonNode) GetOnStripeEnterFunc() func(*ScrollButtonNode) {
-	if sbn.eventsSource == nil { return nil }
+	if sbn.eventsSource == nil {
+		return nil
+	}
 	return sbn.eventsSource.onStripeEnterFunc
 }
 
@@ -371,7 +392,9 @@ func (sbn *ScrollButtonNode) SetOnStripeLeaveFunc(onStripeLeaveFunc func(*Scroll
 	sbn.eventsSource.onStripeLeaveFunc = onStripeLeaveFunc
 }
 func (sbn *ScrollButtonNode) GetOnStripeLeaveFunc() func(*ScrollButtonNode) {
-	if sbn.eventsSource == nil { return nil }
+	if sbn.eventsSource == nil {
+		return nil
+	}
 	return sbn.eventsSource.onStripeLeaveFunc
 }
 
@@ -386,7 +409,9 @@ func (bn *ScrollButtonNode) SetOnKnobEnterFunc(onKnobEnterFunc func(*ScrollButto
 	bn.eventsSource.onKnobEnterFunc = onKnobEnterFunc
 }
 func (bn *ScrollButtonNode) GetOnKnobEnterFunc() func(*ScrollButtonNode) {
-	if bn.eventsSource == nil { return nil }
+	if bn.eventsSource == nil {
+		return nil
+	}
 	return bn.eventsSource.onKnobEnterFunc
 }
 
@@ -401,7 +426,9 @@ func (sbn *ScrollButtonNode) SetOnKnobLeaveFunc(onKnobLeaveFunc func(*ScrollButt
 	sbn.eventsSource.onKnobLeaveFunc = onKnobLeaveFunc
 }
 func (sbn *ScrollButtonNode) GetOnKnobLeaveFunc() func(*ScrollButtonNode) {
-	if sbn.eventsSource == nil { return nil }
+	if sbn.eventsSource == nil {
+		return nil
+	}
 	return sbn.eventsSource.onKnobLeaveFunc
 }
 
@@ -413,9 +440,11 @@ func StripeImage(img *ebiten.Image) ScrollButtonOpt {
 }
 func (sbn *ScrollButtonNode) SetStripeImage(img *ebiten.Image) {
 	sbn.stripe.image = img
-	if sbn.IsAutoSize() && sbn.rootNode != nil { sbn.rootNode.changed = true }
+	if sbn.IsAutoSize() && sbn.rootNode != nil {
+		sbn.rootNode.changed = true
+	}
 }
-func (sbn *ScrollButtonNode) GetStripeImage() *ebiten.Image	 {
+func (sbn *ScrollButtonNode) GetStripeImage() *ebiten.Image {
 	return sbn.stripe.image
 }
 
@@ -475,7 +504,7 @@ func KnobImage(img *ebiten.Image) ScrollButtonOpt {
 func (sbn *ScrollButtonNode) SetKnobImage(img *ebiten.Image) {
 	sbn.knob.image = img
 }
-func (sbn *ScrollButtonNode) GetKnobImage() *ebiten.Image	{
+func (sbn *ScrollButtonNode) GetKnobImage() *ebiten.Image {
 	return sbn.knob.image
 }
 

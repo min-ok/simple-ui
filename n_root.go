@@ -4,37 +4,32 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 )
 
-
 type RootNode struct {
 	lastW, lastH int
-	changed bool
+	changed      bool
 
 	animations map[tweenKey]Animation
 
 	dragging interactable
-	child Node
+	child    Node
 }
-
-
 
 type tweenKey struct {
 	node Node
-	id string
+	id   string
 }
 
-
 type Animation struct {
-	ID string
-	Setter func(float32)
+	ID       string
+	Setter   func(float32)
 	From, To float32
 	Duration float32
-	elapsed float32
-	Curve func(float32) float32
+	elapsed  float32
+	Curve    func(float32) float32
 	Callback func()
 }
 
-
-func NewAnimation(id string, setter func(float32),  from, to, duration float32, curve func(float32) float32, callback func()) Animation {
+func NewAnimation(id string, setter func(float32), from, to, duration float32, curve func(float32) float32, callback func()) Animation {
 	return Animation{
 		id,
 		setter,
@@ -46,16 +41,19 @@ func NewAnimation(id string, setter func(float32),  from, to, duration float32, 
 	}
 }
 
-
 func Animate(n Node, a Animation) {
 	rn := n.base().rootNode
-	if rn != nil {rn.animations[tweenKey{n, a.ID}] = a}
+	if rn != nil {
+		rn.animations[tweenKey{n, a.ID}] = a
+	}
 }
 
 func AnimateTo(n Node, a Animation, getter func() float32) {
 	a.From = getter()
 	rn := n.base().rootNode
-	if rn != nil {rn.animations[tweenKey{n, a.ID}] = a}
+	if rn != nil {
+		rn.animations[tweenKey{n, a.ID}] = a
+	}
 }
 
 func AnimationSequence(n Node, animations ...Animation) {
@@ -86,14 +84,14 @@ func (rn *RootNode) updateTween(dt float32) bool {
 
 		if time >= 1 {
 			time = 1
-			a.Setter(a.From + (a.To - a.From) * a.Curve(time))
+			a.Setter(a.From + (a.To-a.From)*a.Curve(time))
 			delete(rn.animations, id)
 			if a.Callback != nil {
 				a.Callback()
 			}
 
 		} else {
-			a.Setter(a.From + (a.To - a.From) * a.Curve(time))
+			a.Setter(a.From + (a.To-a.From)*a.Curve(time))
 			rn.animations[id] = a
 		}
 	}
@@ -101,18 +99,13 @@ func (rn *RootNode) updateTween(dt float32) bool {
 	return true
 }
 
-
-
-
-
-
 func Root(firstNode Node) *RootNode {
 	rn := &RootNode{
-		lastW: -1,
-		lastH: -1,
-		changed: false,
+		lastW:      -1,
+		lastH:      -1,
+		changed:    false,
 		animations: make(map[tweenKey]Animation),
-		child: firstNode,
+		child:      firstNode,
 	}
 
 	firstNode.base().setRoot(rn)
@@ -120,9 +113,10 @@ func Root(firstNode Node) *RootNode {
 	return rn
 }
 
-
 func (rn *RootNode) UpdateLayout(dt float32, outsideWidth, outsideHeight int) {
-	if rn.updateTween(dt) { rn.changed = true }
+	if rn.updateTween(dt) {
+		rn.changed = true
+	}
 
 	if outsideWidth != rn.lastW || outsideHeight != rn.lastH || rn.changed {
 
@@ -141,8 +135,6 @@ func (rn *RootNode) UpdateLayout(dt float32, outsideWidth, outsideHeight int) {
 	}
 }
 
-
-
 func (rn *RootNode) UpdateCursorLogic() {
 	imX, imY := ebiten.CursorPosition()
 	mX, mY := float32(imX), float32(imY)
@@ -155,7 +147,6 @@ func (rn *RootNode) UpdateCursorLogic() {
 		findCursorInChildren(rn.child, mX, mY)
 	}
 }
-
 
 func (rn *RootNode) Draw(screen *ebiten.Image, showDebugInfo bool) {
 	drawTree(rn.child, screen, showDebugInfo, 0)

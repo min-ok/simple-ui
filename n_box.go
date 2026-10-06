@@ -1,22 +1,20 @@
 package ui
 
 import (
-	"github.com/hajimehoshi/ebiten/v2"
 	"image/color"
+
+	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/vector"
 )
-
 
 type BoxNode struct {
 	baseNode
 	boxElement
 }
 
-
 type boxElement struct {
 	image *ebiten.Image
 }
-
 
 func (bn *BoxNode) draw(screen *ebiten.Image, showDebugInfo bool, depth int) {
 	if showDebugInfo {
@@ -35,7 +33,7 @@ func (bn *BoxNode) draw(screen *ebiten.Image, showDebugInfo bool, depth int) {
 			{color.RGBA{110, 130, 150, 180}, color.RGBA{60, 70, 80, 180}},
 		}
 
-		clr := colors[depth % len(colors)]
+		clr := colors[depth%len(colors)]
 
 		strokeWidth := float32(4)
 
@@ -44,16 +42,16 @@ func (bn *BoxNode) draw(screen *ebiten.Image, showDebugInfo bool, depth int) {
 			bn.image.Fill(clr[0])
 		}
 
-		op.GeoM.Scale(float64(sizeX - 2 * strokeWidth), float64(sizeY - 2 * strokeWidth))
-		op.GeoM.Translate(float64(bn.bounds.minX + strokeWidth), float64(bn.bounds.minY + strokeWidth))
+		op.GeoM.Scale(float64(sizeX-2*strokeWidth), float64(sizeY-2*strokeWidth))
+		op.GeoM.Translate(float64(bn.bounds.minX+strokeWidth), float64(bn.bounds.minY+strokeWidth))
 		screen.DrawImage(bn.image, op)
 
 		vector.StrokeRect(
 			screen,
-			bn.bounds.minX + strokeWidth / 2,
-			bn.bounds.minY + strokeWidth / 2,
-			sizeX - strokeWidth,
-			sizeY - strokeWidth,
+			bn.bounds.minX+strokeWidth/2,
+			bn.bounds.minY+strokeWidth/2,
+			sizeX-strokeWidth,
+			sizeY-strokeWidth,
 			strokeWidth,
 			clr[1],
 			false,
@@ -61,17 +59,13 @@ func (bn *BoxNode) draw(screen *ebiten.Image, showDebugInfo bool, depth int) {
 	}
 }
 
-
-
 func (box *BoxNode) getInitSize() (float32, float32) {
 	return 0, 0
 }
 
-
 func (box *BoxNode) base() *baseNode {
 	return &box.baseNode
 }
-
 
 func Box(opts ...BoxOption) *BoxNode {
 	bn := &BoxNode{}

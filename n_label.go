@@ -1,30 +1,27 @@
 package ui
 
-
 import (
 	"image/color"
 	"strings"
+
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/text/v2"
 )
-
 
 type LabelNode struct {
 	baseNode
 	labelElement
 }
 
-
 type labelElement struct {
-	text string
-	goTextFace *text.GoTextFace
-	color color.RGBA
-	primaryAlign text.Align
+	text           string
+	goTextFace     *text.GoTextFace
+	color          color.RGBA
+	primaryAlign   text.Align
 	secondaryAlign text.Align
-	lineSpacing float64
-	wordWrap bool
+	lineSpacing    float64
+	wordWrap       bool
 }
-
 
 func (ln *LabelNode) draw(screen *ebiten.Image, showDebugInfo bool, depth int) {
 	bounds := ln.bounds
@@ -36,7 +33,7 @@ func (ln *LabelNode) draw(screen *ebiten.Image, showDebugInfo bool, depth int) {
 	case text.AlignEnd:
 		cx = float64(bounds.maxX)
 	default:
-		cx = float64(bounds.minX + (bounds.maxX - bounds.minX) / 2)
+		cx = float64(bounds.minX + (bounds.maxX-bounds.minX)/2)
 	}
 	switch ln.secondaryAlign {
 	case text.AlignStart:
@@ -44,7 +41,7 @@ func (ln *LabelNode) draw(screen *ebiten.Image, showDebugInfo bool, depth int) {
 	case text.AlignEnd:
 		cy = float64(bounds.maxY)
 	default:
-		cy = float64(bounds.minY + (bounds.maxY - bounds.minY) / 2)
+		cy = float64(bounds.minY + (bounds.maxY-bounds.minY)/2)
 	}
 
 	op := &text.DrawOptions{}
@@ -61,45 +58,44 @@ func (ln *LabelNode) draw(screen *ebiten.Image, showDebugInfo bool, depth int) {
 	op.ColorScale.ScaleWithColor(ln.color)
 
 	t := ln.text
-	if (ln.wordWrap) {
-		t = wrapText(ln.text, ln.goTextFace, float64(bounds.maxX - bounds.minX))
+	if ln.wordWrap {
+		t = wrapText(ln.text, ln.goTextFace, float64(bounds.maxX-bounds.minX))
 	}
 
 	text.Draw(screen, t, ln.goTextFace, op)
 }
 
 func wrapText(s string, face *text.GoTextFace, maxWidth float64) string {
-    var result strings.Builder
-    lines := strings.Split(s, "\n")
-    space := text.Advance(" ", face)
-    for i, line := range lines {
-        if i > 0 {
-            result.WriteByte('\n')
-        }
-        words := strings.Fields(line)
-        if len(words) == 0 {
-            continue
-        }
-        var lineWidth float64
-        for j, word := range words {
-            w := text.Advance(word, face)
-            if j == 0 {
-                result.WriteString(word)
-                lineWidth = w
-            } else if lineWidth+space+w <= maxWidth {
-                result.WriteByte(' ')
-                result.WriteString(word)
-                lineWidth += space + w
-            } else {
-                result.WriteByte('\n')
-                result.WriteString(word)
-                lineWidth = w
-            }
-        }
-    }
-    return result.String()
+	var result strings.Builder
+	lines := strings.Split(s, "\n")
+	space := text.Advance(" ", face)
+	for i, line := range lines {
+		if i > 0 {
+			result.WriteByte('\n')
+		}
+		words := strings.Fields(line)
+		if len(words) == 0 {
+			continue
+		}
+		var lineWidth float64
+		for j, word := range words {
+			w := text.Advance(word, face)
+			if j == 0 {
+				result.WriteString(word)
+				lineWidth = w
+			} else if lineWidth+space+w <= maxWidth {
+				result.WriteByte(' ')
+				result.WriteString(word)
+				lineWidth += space + w
+			} else {
+				result.WriteByte('\n')
+				result.WriteString(word)
+				lineWidth = w
+			}
+		}
+	}
+	return result.String()
 }
-
 
 func (ln *LabelNode) getInitSize() (float32, float32) {
 	lineSpacing := ln.lineSpacing
@@ -114,17 +110,13 @@ func (ln *LabelNode) base() *baseNode {
 	return &ln.baseNode
 }
 
-
-
-
-
 func Label(opts ...LabelOption) *LabelNode {
 	ln := &LabelNode{}
 	ln.flags |= flagVisible | flagEnabled
 
 	ln.labelElement = labelElement{
-		color: color.RGBA{255, 255, 255, 255},
-		primaryAlign: text.AlignCenter,
+		color:          color.RGBA{255, 255, 255, 255},
+		primaryAlign:   text.AlignCenter,
 		secondaryAlign: text.AlignCenter,
 	}
 
@@ -133,10 +125,8 @@ func Label(opts ...LabelOption) *LabelNode {
 		opt.applyToLabel(ln)
 	}
 
-
 	return ln
 }
-
 
 func Text(t string) LabelOpt {
 	return func(ln *LabelNode) {
@@ -145,7 +135,9 @@ func Text(t string) LabelOpt {
 }
 func (ln *LabelNode) SetText(t string) {
 	ln.text = t
-	if ln.IsAutoSize() && ln.rootNode != nil { ln.rootNode.changed = true }
+	if ln.IsAutoSize() && ln.rootNode != nil {
+		ln.rootNode.changed = true
+	}
 }
 func (ln *LabelNode) GetText() string {
 	return ln.text
@@ -194,13 +186,13 @@ func LineSpacing(s float64) LabelOpt {
 }
 func (ln *LabelNode) SetLineSpacing(s float64) {
 	ln.lineSpacing = s
-	if ln.IsAutoSize() && ln.rootNode != nil { ln.rootNode.changed = true }
+	if ln.IsAutoSize() && ln.rootNode != nil {
+		ln.rootNode.changed = true
+	}
 }
 func (ln *LabelNode) GetLineSpacing() float64 {
 	return ln.lineSpacing
 }
-
-
 
 func GoTextFace(goTextFace *text.GoTextFace) LabelOpt {
 	return func(ln *LabelNode) {
@@ -208,15 +200,16 @@ func GoTextFace(goTextFace *text.GoTextFace) LabelOpt {
 	}
 }
 
-func (ln *LabelNode) SetGoTextFace(goTextFace *text.GoTextFace)  {
+func (ln *LabelNode) SetGoTextFace(goTextFace *text.GoTextFace) {
 	ln.goTextFace = goTextFace
-	if ln.IsAutoSize() && ln.rootNode != nil { ln.rootNode.changed = true }
+	if ln.IsAutoSize() && ln.rootNode != nil {
+		ln.rootNode.changed = true
+	}
 }
 
 func (ln *LabelNode) GetGoTextFace() *text.GoTextFace {
 	return ln.goTextFace
 }
-
 
 func WordWrap() LabelOpt {
 	return func(ln *LabelNode) {

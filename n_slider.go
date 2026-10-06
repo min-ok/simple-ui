@@ -11,10 +11,9 @@ type ScrollNode struct {
 	scrollElement
 }
 
-
 type scrollElement struct {
 	scrollX, scrollY float32 // 0 - 1
-	buffer *ebiten.Image
+	buffer           *ebiten.Image
 }
 
 func (sn *ScrollNode) draw(screen *ebiten.Image, showDebugInfo bool, depth int) {

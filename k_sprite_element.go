@@ -2,27 +2,30 @@ package ui
 
 import (
 	"image"
+
 	"github.com/hajimehoshi/ebiten/v2"
 )
 
 type spriteElement struct {
-	image *ebiten.Image
+	image           *ebiten.Image
 	nineSliceSource *NineSliceSource
 
 	colorScale ebiten.ColorScale
-	filter ebiten.Filter
-	blend ebiten.Blend
+	filter     ebiten.Filter
+	blend      ebiten.Blend
 }
 
 type NineSliceSource struct {
-	top int
+	top    int
 	bottom int
-	right int
-	left int
+	right  int
+	left   int
 }
 
 func (se *spriteElement) getInitSize() (float32, float32) {
-	if (se.image == nil) { return 0, 0 }
+	if se.image == nil {
+		return 0, 0
+	}
 
 	bounds := se.image.Bounds()
 	return float32(bounds.Dx()), float32(bounds.Dy())
@@ -40,8 +43,6 @@ func (element *spriteElement) drawSpriteElement(rect rect, screen *ebiten.Image)
 	}
 }
 
-
-
 func (element *spriteElement) drawNineSlice(rect rect, screen *ebiten.Image) {
 	bounds := element.image.Bounds()
 
@@ -51,7 +52,7 @@ func (element *spriteElement) drawNineSlice(rect rect, screen *ebiten.Image) {
 	offsetX := bounds.Min.X
 	offsetY := bounds.Min.Y
 
-	boxSizeX, boxSizeY := rect.maxX - rect.minX, rect.maxY - rect.minY
+	boxSizeX, boxSizeY := rect.maxX-rect.minX, rect.maxY-rect.minY
 
 	top, bottom, right, left := element.nineSliceSource.top, element.nineSliceSource.bottom, element.nineSliceSource.right, element.nineSliceSource.left
 
@@ -61,29 +62,29 @@ func (element *spriteElement) drawNineSlice(rect rect, screen *ebiten.Image) {
 	newSlicesX := []float32{0, float32(left), boxSizeX - float32(right), boxSizeX}
 	newSlicesY := []float32{0, float32(top), boxSizeY - float32(bottom), boxSizeY}
 
-	xFactor := (boxSizeX - float32(right + left)) / (fSizeX - float32(right + left))
-	yFactor := (boxSizeY  - float32(top + bottom)) / (fSizeY - float32(top + bottom))
+	xFactor := (boxSizeX - float32(right+left)) / (fSizeX - float32(right+left))
+	yFactor := (boxSizeY - float32(top+bottom)) / (fSizeY - float32(top+bottom))
 
 	for i := 0; i < 3; i += 1 {
 		for j := 0; j < 3; j += 1 {
 			subRect := image.Rect(
-				offsetX + currSlicesX[i],
-				offsetY + currSlicesY[j],
-				offsetX + currSlicesX[i + 1],
-				offsetY + currSlicesY[j + 1],
+				offsetX+currSlicesX[i],
+				offsetY+currSlicesY[j],
+				offsetX+currSlicesX[i+1],
+				offsetY+currSlicesY[j+1],
 			)
 			res := element.image.SubImage(subRect).(*ebiten.Image)
 			op := &ebiten.DrawImageOptions{}
 
 			if i == 1 && j == 1 {
 				op.GeoM.Scale(float64(xFactor), float64(yFactor))
-			} else if i % 2 == 1 {
+			} else if i%2 == 1 {
 				op.GeoM.Scale(float64(xFactor), 1)
-			} else if j % 2 == 1 {
+			} else if j%2 == 1 {
 				op.GeoM.Scale(1, float64(yFactor))
 			}
 
-			op.GeoM.Translate(float64(newSlicesX[i] + rect.minX), float64(newSlicesY[j] + rect.minY))
+			op.GeoM.Translate(float64(newSlicesX[i]+rect.minX), float64(newSlicesY[j]+rect.minY))
 
 			op.ColorScale = element.colorScale
 			op.Filter = element.filter
@@ -94,16 +95,15 @@ func (element *spriteElement) drawNineSlice(rect rect, screen *ebiten.Image) {
 	}
 }
 
-
 func (element *spriteElement) drawScaled(rect rect, screen *ebiten.Image) {
 	iSizeX, iSizeY := element.image.Bounds().Dx(), element.image.Bounds().Dy()
 	fSizeX, fSizeY := float32(iSizeX), float32(iSizeY)
 
-	boxSizeX, boxSizeY := rect.maxX - rect.minX, rect.maxY - rect.minY
+	boxSizeX, boxSizeY := rect.maxX-rect.minX, rect.maxY-rect.minY
 
 	op := &ebiten.DrawImageOptions{}
 
-	op.GeoM.Scale(float64(boxSizeX / fSizeX), float64(boxSizeY / fSizeY))
+	op.GeoM.Scale(float64(boxSizeX/fSizeX), float64(boxSizeY/fSizeY))
 	op.GeoM.Translate(float64(rect.minX), float64(rect.minY))
 
 	op.ColorScale = element.colorScale
@@ -113,16 +113,13 @@ func (element *spriteElement) drawScaled(rect rect, screen *ebiten.Image) {
 	screen.DrawImage(element.image, op)
 }
 
-
-
-
 // NewNineSlice creates a NineSlice.
 func NewNineSliceSource(top, bottom, right, left int) *NineSliceSource {
 	return &NineSliceSource{
-		top: top,
+		top:    top,
 		bottom: bottom,
-		right: right,
-		left: left,
+		right:  right,
+		left:   left,
 	}
 }
 
@@ -160,7 +157,6 @@ func (se *spriteElement) GetNineSlice() *NineSliceSource {
 
 // ColorScale
 
-
 func ColorScale(cs ebiten.ColorScale) SpriteElementOpt {
 	return func(se *spriteElement) {
 		se.colorScale = cs
@@ -192,7 +188,6 @@ func (se *spriteElement) GetFilter() ebiten.Filter {
 }
 
 // Blend
-
 
 func Blend(b ebiten.Blend) SpriteElementOpt {
 	return func(se *spriteElement) {
