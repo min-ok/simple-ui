@@ -59,12 +59,12 @@ func (bn *BoxNode) draw(screen *ebiten.Image, showDebugInfo bool, depth int) {
 	}
 }
 
-func (box *BoxNode) getInitSize() (float32, float32) {
+func (bn *BoxNode) getInitSize() (float32, float32) {
 	return 0, 0
 }
 
-func (box *BoxNode) base() *baseNode {
-	return &box.baseNode
+func (bn *BoxNode) base() *baseNode {
+	return &bn.baseNode
 }
 
 func Box(opts ...BoxOption) *BoxNode {

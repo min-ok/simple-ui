@@ -44,10 +44,10 @@ const (
 	flagAutoSize uint8 = 1 << 3
 )
 
-func (b *baseNode) setRoot(r *RootNode) {
-	b.rootNode = r
-	for _, child := range b.children {
-		child.base().setRoot(r)
+func (bn *baseNode) setRoot(rn *RootNode) {
+	bn.rootNode = rn
+	for _, child := range bn.children {
+		child.base().setRoot(rn)
 	}
 }
 

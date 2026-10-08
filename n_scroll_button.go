@@ -402,20 +402,20 @@ func (sbn *ScrollButtonNode) GetOnStripeLeaveFunc() func(*ScrollButtonNode) {
 }
 
 func OnKnobEnterFunc(onKnobEnterFunc func(*ScrollButtonNode)) ScrollButtonOpt {
-	return func(bn *ScrollButtonNode) {
-		bn.ensureEventsSource()
-		bn.eventsSource.onKnobEnterFunc = onKnobEnterFunc
+	return func(sbn *ScrollButtonNode) {
+		sbn.ensureEventsSource()
+		sbn.eventsSource.onKnobEnterFunc = onKnobEnterFunc
 	}
 }
-func (bn *ScrollButtonNode) SetOnKnobEnterFunc(onKnobEnterFunc func(*ScrollButtonNode)) {
-	bn.ensureEventsSource()
-	bn.eventsSource.onKnobEnterFunc = onKnobEnterFunc
+func (sbn *ScrollButtonNode) SetOnKnobEnterFunc(onKnobEnterFunc func(*ScrollButtonNode)) {
+	sbn.ensureEventsSource()
+	sbn.eventsSource.onKnobEnterFunc = onKnobEnterFunc
 }
-func (bn *ScrollButtonNode) GetOnKnobEnterFunc() func(*ScrollButtonNode) {
-	if bn.eventsSource == nil {
+func (sbn *ScrollButtonNode) GetOnKnobEnterFunc() func(*ScrollButtonNode) {
+	if sbn.eventsSource == nil {
 		return nil
 	}
-	return bn.eventsSource.onKnobEnterFunc
+	return sbn.eventsSource.onKnobEnterFunc
 }
 
 func OnKnobLeaveFunc(onKnobLeaveFunc func(*ScrollButtonNode)) ScrollButtonOpt {

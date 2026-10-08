@@ -33,20 +33,20 @@ func (se *spriteElement) getInitSize() (float32, float32) {
 	return float32(bounds.Dx()), float32(bounds.Dy())
 }
 
-func (element *spriteElement) drawSpriteElement(rect rect, screen *ebiten.Image) {
-	if element.image == nil {
+func (se *spriteElement) drawSpriteElement(rect rect, screen *ebiten.Image) {
+	if se.image == nil {
 		return
 	}
 
-	if element.nineSliceSource == nil {
-		element.drawScaled(rect, screen)
+	if se.nineSliceSource == nil {
+		se.drawScaled(rect, screen)
 	} else {
-		element.drawNineSlice(rect, screen)
+		se.drawNineSlice(rect, screen)
 	}
 }
 
-func (element *spriteElement) drawNineSlice(rect rect, screen *ebiten.Image) {
-	bounds := element.image.Bounds()
+func (se *spriteElement) drawNineSlice(rect rect, screen *ebiten.Image) {
+	bounds := se.image.Bounds()
 
 	iSizeX, iSizeY := bounds.Dx(), bounds.Dy()
 	fSizeX, fSizeY := float32(iSizeX), float32(iSizeY)
@@ -56,7 +56,7 @@ func (element *spriteElement) drawNineSlice(rect rect, screen *ebiten.Image) {
 
 	boxSizeX, boxSizeY := rect.maxX-rect.minX, rect.maxY-rect.minY
 
-	top, bottom, right, left := element.nineSliceSource.top, element.nineSliceSource.bottom, element.nineSliceSource.right, element.nineSliceSource.left
+	top, bottom, right, left := se.nineSliceSource.top, se.nineSliceSource.bottom, se.nineSliceSource.right, se.nineSliceSource.left
 
 	currSlicesX := []int{0, left, iSizeX - right, iSizeX}
 	currSlicesY := []int{0, top, iSizeY - bottom, iSizeY}
@@ -75,7 +75,7 @@ func (element *spriteElement) drawNineSlice(rect rect, screen *ebiten.Image) {
 				offsetX+currSlicesX[i+1],
 				offsetY+currSlicesY[j+1],
 			)
-			res := element.image.SubImage(subRect).(*ebiten.Image)
+			res := se.image.SubImage(subRect).(*ebiten.Image)
 			op := &ebiten.DrawImageOptions{}
 
 			if i == 1 && j == 1 {
@@ -88,17 +88,17 @@ func (element *spriteElement) drawNineSlice(rect rect, screen *ebiten.Image) {
 
 			op.GeoM.Translate(float64(newSlicesX[i]+rect.minX), float64(newSlicesY[j]+rect.minY))
 
-			op.ColorScale = element.colorScale
-			op.Filter = element.filter
-			op.Blend = element.blend
+			op.ColorScale = se.colorScale
+			op.Filter = se.filter
+			op.Blend = se.blend
 
 			screen.DrawImage(res, op)
 		}
 	}
 }
 
-func (element *spriteElement) drawScaled(rect rect, screen *ebiten.Image) {
-	iSizeX, iSizeY := element.image.Bounds().Dx(), element.image.Bounds().Dy()
+func (se *spriteElement) drawScaled(rect rect, screen *ebiten.Image) {
+	iSizeX, iSizeY := se.image.Bounds().Dx(), se.image.Bounds().Dy()
 	fSizeX, fSizeY := float32(iSizeX), float32(iSizeY)
 
 	boxSizeX, boxSizeY := rect.maxX-rect.minX, rect.maxY-rect.minY
@@ -108,11 +108,11 @@ func (element *spriteElement) drawScaled(rect rect, screen *ebiten.Image) {
 	op.GeoM.Scale(float64(boxSizeX/fSizeX), float64(boxSizeY/fSizeY))
 	op.GeoM.Translate(float64(rect.minX), float64(rect.minY))
 
-	op.ColorScale = element.colorScale
-	op.Filter = element.filter
-	op.Blend = element.blend
+	op.ColorScale = se.colorScale
+	op.Filter = se.filter
+	op.Blend = se.blend
 
-	screen.DrawImage(element.image, op)
+	screen.DrawImage(se.image, op)
 }
 
 func (se *spriteElement) sizeChanged() {
