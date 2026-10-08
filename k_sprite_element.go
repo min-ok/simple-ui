@@ -7,6 +7,8 @@ import (
 )
 
 type spriteElement struct {
+	owner *baseNode
+
 	image           *ebiten.Image
 	nineSliceSource *NineSliceSource
 
@@ -113,6 +115,12 @@ func (element *spriteElement) drawScaled(rect rect, screen *ebiten.Image) {
 	screen.DrawImage(element.image, op)
 }
 
+func (se *spriteElement) sizeChanged() {
+	if se.owner != nil && se.owner.IsAutoSize() {
+		se.owner.makeChanged()
+	}
+}
+
 // NewNineSlice creates a NineSlice.
 func NewNineSliceSource(top, bottom, right, left int) *NineSliceSource {
 	return &NineSliceSource{
@@ -133,6 +141,7 @@ func Image(image *ebiten.Image) SpriteElementOpt {
 
 func (se *spriteElement) SetImage(image *ebiten.Image) {
 	se.image = image
+	se.sizeChanged()
 }
 
 func (se *spriteElement) GetImage() *ebiten.Image {
@@ -149,6 +158,7 @@ func NineSlice(nss *NineSliceSource) SpriteElementOpt {
 
 func (se *spriteElement) SetNineSlice(nss *NineSliceSource) {
 	se.nineSliceSource = nss
+	se.sizeChanged()
 }
 
 func (se *spriteElement) GetNineSlice() *NineSliceSource {

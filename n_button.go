@@ -113,6 +113,7 @@ func (bn *ButtonNode) prepareFrame() {
 func Button(opts ...ButtonOption) *ButtonNode {
 	bn := &ButtonNode{}
 	bn.flags |= flagVisible | flagEnabled
+	bn.owner = &bn.baseNode
 
 	for _, opt := range opts {
 		opt.applyToNode(bn)

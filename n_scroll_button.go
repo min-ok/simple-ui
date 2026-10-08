@@ -232,6 +232,9 @@ func ScrollButton(opts ...ScrollButtonOption) *ScrollButtonNode {
 	sbn := &ScrollButtonNode{}
 	sbn.flags |= flagVisible | flagEnabled
 
+	sbn.stripe.owner = &sbn.baseNode
+	sbn.knob.owner = nil
+
 	for _, opt := range opts {
 		opt.applyToNode(sbn)
 		opt.applyToScrollButton(sbn)
@@ -433,123 +436,27 @@ func (sbn *ScrollButtonNode) GetOnKnobLeaveFunc() func(*ScrollButtonNode) {
 }
 
 // Image
-func StripeImage(img *ebiten.Image) ScrollButtonOpt {
+
+func Stripe(opts ...SpriteElementOpt) ScrollButtonOpt {
 	return func(sbn *ScrollButtonNode) {
-		sbn.stripe.image = img
+		for _, o := range opts {
+			o(&sbn.stripe)
+		}
 	}
-}
-func (sbn *ScrollButtonNode) SetStripeImage(img *ebiten.Image) {
-	sbn.stripe.image = img
-	if sbn.IsAutoSize() && sbn.rootNode != nil {
-		sbn.rootNode.changed = true
-	}
-}
-func (sbn *ScrollButtonNode) GetStripeImage() *ebiten.Image {
-	return sbn.stripe.image
 }
 
-func StripeNineSlice(nss *NineSliceSource) ScrollButtonOpt {
-	return func(sbn *ScrollButtonNode) {
-		sbn.stripe.nineSliceSource = nss
-	}
-}
-func (sbn *ScrollButtonNode) SetStripeNineSlice(nss *NineSliceSource) {
-	sbn.stripe.nineSliceSource = nss
-}
-func (sbn *ScrollButtonNode) GetStripeNineSlice() *NineSliceSource {
-	return sbn.stripe.nineSliceSource
+func (sbn *ScrollButtonNode) Stripe() *spriteElement {
+	return &sbn.stripe
 }
 
-func StripeColorScale(cs ebiten.ColorScale) ScrollButtonOpt {
+func Knob(opts ...SpriteElementOpt) ScrollButtonOpt {
 	return func(sbn *ScrollButtonNode) {
-		sbn.stripe.colorScale = cs
+		for _, o := range opts {
+			o(&sbn.knob)
+		}
 	}
 }
-func (sbn *ScrollButtonNode) SetStripeColorScale(cs ebiten.ColorScale) {
-	sbn.stripe.colorScale = cs
-}
-func (sbn *ScrollButtonNode) GetStripeColorScale() ebiten.ColorScale {
-	return sbn.stripe.colorScale
-}
 
-func StripeFilter(f ebiten.Filter) ScrollButtonOpt {
-	return func(sbn *ScrollButtonNode) {
-		sbn.stripe.filter = f
-	}
-}
-func (sbn *ScrollButtonNode) SetStripeFilter(f ebiten.Filter) {
-	sbn.stripe.filter = f
-}
-func (sbn *ScrollButtonNode) GetStripeFilter() ebiten.Filter {
-	return sbn.stripe.filter
-}
-
-func StripeBlend(b ebiten.Blend) ScrollButtonOpt {
-	return func(sbn *ScrollButtonNode) {
-		sbn.stripe.blend = b
-	}
-}
-func (sbn *ScrollButtonNode) SetStripeBlend(b ebiten.Blend) {
-	sbn.stripe.blend = b
-}
-func (sbn *ScrollButtonNode) GetStripeBlend() ebiten.Blend {
-	return sbn.stripe.blend
-}
-
-func KnobImage(img *ebiten.Image) ScrollButtonOpt {
-	return func(sbn *ScrollButtonNode) {
-		sbn.knob.image = img
-	}
-}
-func (sbn *ScrollButtonNode) SetKnobImage(img *ebiten.Image) {
-	sbn.knob.image = img
-}
-func (sbn *ScrollButtonNode) GetKnobImage() *ebiten.Image {
-	return sbn.knob.image
-}
-
-func KnobNineSlice(nss *NineSliceSource) ScrollButtonOpt {
-	return func(sbn *ScrollButtonNode) {
-		sbn.knob.nineSliceSource = nss
-	}
-}
-func (sbn *ScrollButtonNode) SetKnobNineSlice(nss *NineSliceSource) {
-	sbn.knob.nineSliceSource = nss
-}
-func (sbn *ScrollButtonNode) GetKnobNineSlice() *NineSliceSource {
-	return sbn.knob.nineSliceSource
-}
-
-func KnobColorScale(cs ebiten.ColorScale) ScrollButtonOpt {
-	return func(sbn *ScrollButtonNode) { sbn.knob.colorScale = cs }
-}
-func (sbn *ScrollButtonNode) SetKnobColorScale(cs ebiten.ColorScale) {
-	sbn.knob.colorScale = cs
-}
-func (sbn *ScrollButtonNode) GetKnobColorScale() ebiten.ColorScale {
-	return sbn.knob.colorScale
-}
-
-func KnobFilter(f ebiten.Filter) ScrollButtonOpt {
-	return func(sbn *ScrollButtonNode) {
-		sbn.knob.filter = f
-	}
-}
-func (sbn *ScrollButtonNode) SetKnobFilter(f ebiten.Filter) {
-	sbn.knob.filter = f
-}
-func (sbn *ScrollButtonNode) GetKnobFilter() ebiten.Filter {
-	return sbn.knob.filter
-}
-
-func KnobBlend(b ebiten.Blend) ScrollButtonOpt {
-	return func(sbn *ScrollButtonNode) {
-		sbn.knob.blend = b
-	}
-}
-func (sbn *ScrollButtonNode) SetKnobBlend(b ebiten.Blend) {
-	sbn.knob.blend = b
-}
-func (sbn *ScrollButtonNode) GetKnobBlend() ebiten.Blend {
-	return sbn.knob.blend
+func (sbn *ScrollButtonNode) Knob() *spriteElement {
+	return &sbn.knob
 }

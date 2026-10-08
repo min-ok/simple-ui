@@ -25,6 +25,7 @@ func (sn *SpriteNode) base() *baseNode {
 func Sprite(opts ...SpriteOption) *SpriteNode {
 	sn := &SpriteNode{}
 	sn.flags |= flagVisible | flagEnabled
+	sn.owner = &sn.baseNode
 
 	for _, opt := range opts {
 		opt.applyToNode(sn)

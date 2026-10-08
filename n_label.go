@@ -135,8 +135,8 @@ func Text(t string) LabelOpt {
 }
 func (ln *LabelNode) SetText(t string) {
 	ln.text = t
-	if ln.IsAutoSize() && ln.rootNode != nil {
-		ln.rootNode.changed = true
+	if ln.IsAutoSize() {
+		ln.makeChanged()
 	}
 }
 func (ln *LabelNode) GetText() string {
@@ -186,8 +186,8 @@ func LineSpacing(s float64) LabelOpt {
 }
 func (ln *LabelNode) SetLineSpacing(s float64) {
 	ln.lineSpacing = s
-	if ln.IsAutoSize() && ln.rootNode != nil {
-		ln.rootNode.changed = true
+	if ln.IsAutoSize() {
+		ln.makeChanged()
 	}
 }
 func (ln *LabelNode) GetLineSpacing() float64 {
@@ -202,8 +202,8 @@ func GoTextFace(goTextFace *text.GoTextFace) LabelOpt {
 
 func (ln *LabelNode) SetGoTextFace(goTextFace *text.GoTextFace) {
 	ln.goTextFace = goTextFace
-	if ln.IsAutoSize() && ln.rootNode != nil {
-		ln.rootNode.changed = true
+	if ln.IsAutoSize() {
+		ln.makeChanged()
 	}
 }
 

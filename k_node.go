@@ -51,6 +51,12 @@ func (b *baseNode) setRoot(r *RootNode) {
 	}
 }
 
+func (bn *baseNode) makeChanged() {
+	if bn.rootNode != nil {
+		bn.rootNode.changed = true
+	}
+}
+
 // MakeDynamic makes the Node dynamic if it was fixed.
 func MakeDynamic(v float32) CommonOpt {
 	return func(n Node) {
@@ -66,9 +72,7 @@ func Weight(v float32) CommonOpt {
 
 func (bn *baseNode) SetWeight(v float32) {
 	bn.weight = v
-	if bn.rootNode != nil {
-		bn.rootNode.changed = true
-	}
+	bn.makeChanged()
 }
 
 func (bn *baseNode) GetWeight() float32 {
@@ -83,9 +87,7 @@ func Border(v float32) CommonOpt {
 
 func (bn *baseNode) SetBorder(v float32) {
 	bn.border = v
-	if bn.rootNode != nil {
-		bn.rootNode.changed = true
-	}
+	bn.makeChanged()
 }
 
 func (bn *baseNode) GetBorder() float32 {
@@ -108,16 +110,12 @@ func Horizontal() CommonOpt {
 
 func (bn *baseNode) SetVertical() {
 	bn.flags |= flagVertical
-	if bn.rootNode != nil {
-		bn.rootNode.changed = true
-	}
+	bn.makeChanged()
 }
 
 func (bn *baseNode) SetHorizontal() {
 	bn.flags &= ^flagVertical
-	if bn.rootNode != nil {
-		bn.rootNode.changed = true
-	}
+	bn.makeChanged()
 }
 
 func (bn *baseNode) IsVertical() bool {
@@ -132,9 +130,7 @@ func Spacing(v float32) CommonOpt {
 
 func (bn *baseNode) SetSpacing(v float32) {
 	bn.spacing = v
-	if bn.rootNode != nil {
-		bn.rootNode.changed = true
-	}
+	bn.makeChanged()
 }
 
 func (bn *baseNode) GetSpacing() float32 {
@@ -152,9 +148,7 @@ func SelfAlign(v float32) CommonOpt {
 
 func (bn *baseNode) SetSelfAlign(v float32) {
 	bn.selfAlign = v
-	if bn.rootNode != nil {
-		bn.rootNode.changed = true
-	}
+	bn.makeChanged()
 }
 
 func (bn *baseNode) GetSelfAlign() float32 {
@@ -172,9 +166,7 @@ func ContentAlign(v float32) CommonOpt {
 
 func (bn *baseNode) SetContentAlign(v float32) {
 	bn.contentAlign = v
-	if bn.rootNode != nil {
-		bn.rootNode.changed = true
-	}
+	bn.makeChanged()
 }
 
 func (bn *baseNode) GetContentAlign() float32 {
@@ -190,9 +182,7 @@ func FixX(x float32) CommonOpt {
 
 func (bn *baseNode) SetFixX(v float32) {
 	bn.fixX = v
-	if bn.rootNode != nil {
-		bn.rootNode.changed = true
-	}
+	bn.makeChanged()
 }
 
 func (bn *baseNode) GetFixX() float32 {
@@ -208,9 +198,7 @@ func FixY(y float32) CommonOpt {
 
 func (bn *baseNode) SetFixY(v float32) {
 	bn.fixY = v
-	if bn.rootNode != nil {
-		bn.rootNode.changed = true
-	}
+	bn.makeChanged()
 }
 
 func (bn *baseNode) GetFixY() float32 {
@@ -228,9 +216,7 @@ func FixSize(x, y float32) CommonOpt {
 func (bn *baseNode) SetFixSize(x, y float32) {
 	bn.fixX = x
 	bn.fixY = y
-	if bn.rootNode != nil {
-		bn.rootNode.changed = true
-	}
+	bn.makeChanged()
 }
 
 func (bn *baseNode) GetFixSize() (float32, float32) {
@@ -256,16 +242,12 @@ func NoAutoSize() CommonOpt {
 
 func (bn *baseNode) SetAutoSize() {
 	bn.flags |= flagAutoSize
-	if bn.rootNode != nil {
-		bn.rootNode.changed = true
-	}
+	bn.makeChanged()
 }
 
 func (bn *baseNode) SetNoAutoSize() {
 	bn.flags &= ^flagAutoSize
-	if bn.rootNode != nil {
-		bn.rootNode.changed = true
-	}
+	bn.makeChanged()
 }
 
 func (bn *baseNode) IsAutoSize() bool {
@@ -286,16 +268,12 @@ func Invisible() CommonOpt {
 
 func (bn *baseNode) Show() {
 	bn.flags |= flagVisible
-	if bn.rootNode != nil {
-		bn.rootNode.changed = true
-	}
+	bn.makeChanged()
 }
 
 func (bn *baseNode) Hide() {
 	bn.flags &= ^flagVisible
-	if bn.rootNode != nil {
-		bn.rootNode.changed = true
-	}
+	bn.makeChanged()
 }
 
 func (bn *baseNode) IsVisible() bool {
@@ -330,16 +308,12 @@ func Disabled() CommonOpt {
 
 func (bn *baseNode) Enable() {
 	bn.enableBranch()
-	if bn.rootNode != nil {
-		bn.rootNode.changed = true
-	}
+	bn.makeChanged()
 }
 
 func (bn *baseNode) Disable() {
 	bn.disableBranch()
-	if bn.rootNode != nil {
-		bn.rootNode.changed = true
-	}
+	bn.makeChanged()
 }
 
 func (bn *baseNode) IsEnabled() bool {
